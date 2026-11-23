@@ -11,6 +11,7 @@ USE social_media;
 DROP TABLE IF EXISTS likes;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS friendships;
 DROP TABLE IF EXISTS users;
 
 -- users
@@ -23,6 +24,31 @@ CREATE TABLE users (
   created_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT uq_users_username UNIQUE (username),
   CONSTRAINT uq_users_email    UNIQUE (email)
+) ENGINE=InnoDB;
+
+-- Friend relationships and pending friend requests
+CREATE TABLE friendships (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    requester_id INT NOT NULL,
+    addressee_id INT NOT NULL,
+
+    status ENUM('pending', 'accepted') NOT NULL DEFAULT 'pending',
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_friendships_requester
+        FOREIGN KEY (requester_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_friendships_addressee
+        FOREIGN KEY (addressee_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT uq_friendship_request
+        UNIQUE (requester_id, addressee_id)
 ) ENGINE=InnoDB;
 
 -- posts
