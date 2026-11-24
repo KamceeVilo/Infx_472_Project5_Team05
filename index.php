@@ -60,7 +60,7 @@ $postsStmt = $pdo->prepare('
     ORDER BY p.created_at DESC
 ');
 $postsStmt->execute([
-    ':page_uid'   => $userId,
+    ':page_uid' => $userId,
     ':author_uid' => $userId,
 ]);
 $userPosts = $postsStmt->fetchAll();
@@ -68,12 +68,14 @@ $userPosts = $postsStmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($currentUser['name']) ?> - Feed</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="scanlines"></div>
 
@@ -86,6 +88,16 @@ $userPosts = $postsStmt->fetchAll();
             <nav class="nav-links">
                 <span class="user-badge">User: <strong>@<?= e($currentUser['username']) ?></strong></span>
                 <a href="index.php" class="nav-link">[ Feed ]</a>
+                <a href="profile.php" class="nav-link">
+                    [ Profile ]
+                </a>
+                <a href="people.php" class="nav-link">
+                    [ Find People ]
+                </a>
+
+                <a href="requests.php" class="nav-link">
+                    [ Friend Requests ]
+                </a>
                 <a href="logout.php" class="nav-link">[ Logout ]</a>
             </nav>
         </header>
@@ -121,7 +133,8 @@ $userPosts = $postsStmt->fetchAll();
                     <input type="hidden" name="action" value="create_post">
                     <div class="form-group">
                         <label for="content">What would you like to share?</label>
-                        <textarea id="content" name="content" rows="4" placeholder="Type your post here..." required></textarea>
+                        <textarea id="content" name="content" rows="4" placeholder="Type your post here..."
+                            required></textarea>
                     </div>
                     <button type="submit" class="btn">[ Publish Post ]</button>
                 </form>
@@ -142,7 +155,8 @@ $userPosts = $postsStmt->fetchAll();
                             <article class="post-item">
                                 <div class="post-header">
                                     <span class="post-author"><?= e($post['name']) ?> (@<?= e($post['username']) ?>)</span>
-                                    <time class="post-date"><?= e(date('M j, Y \a\t g:i A', strtotime($post['created_at']))) ?></time>
+                                    <time
+                                        class="post-date"><?= e(date('M j, Y \a\t g:i A', strtotime($post['created_at']))) ?></time>
                                 </div>
                                 <div class="post-content">
                                     <?= nl2br(e($post['content'])) ?>
@@ -155,5 +169,5 @@ $userPosts = $postsStmt->fetchAll();
         </main>
     </div>
 </body>
-</html>
 
+</html>
